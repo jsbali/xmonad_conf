@@ -13,23 +13,23 @@
 Config { 
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
-  font = "xft:Ubuntu Mono-14",
+  font = "xft:Ubuntu Mono-10",
   bgColor = "black",
   fgColor = "grey",
 
-  -- Position is top left, taking up 95% of screen.
+  -- Position is top left, taking up 91% of screen.
   -- You are likely to have to tweak the width here based on the width
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 95, 
+  position = TopW L 91, 
 
   -- list of commands which gather information about your system for
   -- presentation in the bar. 
   commands = [ 
     -- Gather and format CPU usage information. 
     -- If it's above 50%, we consider it high usage and make it red.  
-    Run Cpu [
+    Run MultiCpu [
       "-H","50",
       "--high","red"
     ] 10,
@@ -60,12 +60,15 @@ Config {
     -- in Debian and derivatives like Ubuntu. 
     Run Com "~/.xmonad/get-volume" [] "myvolume" 10,
     
+    -- To get /home statistics we run a custom script
+    Run Com "~/.xmonad/get-size" [] "fs" 10,
+    
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
     Run StdinReader
    ],
 
-   -- Separator character used to wrape variables in the xmobar template 
+   -- Separator character used to wrap variables in the xmobar template 
    sepChar = "%",
 
    -- Alignment separater characer used in the xmobar template. Everything
@@ -74,5 +77,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %battery% | %cpu% | %memory% | Vol: %myvolume%    <fc=#e6744c>%date%</fc>     "
+   template = "%StdinReader% }{ %fs% | %battery% | %multicpu% | %memory% | Vol: %myvolume% <fc=#e6744c>%date%</fc>"
 }
