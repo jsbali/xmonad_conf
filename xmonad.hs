@@ -16,6 +16,7 @@
 
 import XMonad
 import XMonad.Hooks.SetWMName
+import XMonad.Actions.CycleWS
 import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.IM
@@ -43,7 +44,7 @@ myModMask            = mod4Mask       -- changes the mod key to "super"
 myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
-myTerminal           = "terminator"   -- which terminal software to use
+myTerminal           = "gnome-terminal"   -- which terminal software to use
 myIMRosterTitle      = "Contact List" -- title of roster on IM workspace
 
 
@@ -86,13 +87,13 @@ myUrgentWSRight = "}"
 
 myWorkspaces =
   [
-    "7:Chat",  "8:Dbg", "9:Pix",
-    "4:Docs",  "5:Dev", "6:Web",
-    "1:Term",  "2:Hub", "3:Mail",
-    "0:VM",    "Extr1", "Extr2"
+    "7:Dev-W",  "8:Doc",    "9:Chat",
+    "4:Dev-R",  "5:Dev-J",  "6:Web",
+    "1:Music",  "2:Vid",    "3:Term",
+    "0:File",   "Extr1",    "Extr2"
   ]
 
-startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
+startupWorkspace = "3:Term"  -- which workspace do you want to be on after launch?
 
 {-
   Layout configuration. In this section we identify which xmonad
@@ -155,7 +156,7 @@ defaultLayouts = smartBorders(avoidStruts(
 -- identified using the myIMRosterTitle variable, and by default is
 -- configured for Empathy, so if you're using something else you
 -- will want to modify that variable.
-chatLayout = avoidStruts(withIM (1%7) (Title myIMRosterTitle) Grid)
+webLayout = avoidStruts(noBorders Full)
 
 -- The GIMP layout uses the ThreeColMid layout. The traditional GIMP
 -- floating panels approach is a bit of a challenge to handle with xmonad;
@@ -168,9 +169,8 @@ gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
 -- Here we combine our default layouts with our specific, workspace-locked
 -- layouts.
 myLayouts =
-  onWorkspace "7:Chat" chatLayout
-  $ onWorkspace "9:Pix" gimpLayout
-  $ defaultLayouts
+   --onWorkspace "9:Dbg" gimpLayout $ 
+   defaultLayouts
 
 
 {-
@@ -202,11 +202,15 @@ myKeyBindings =
     ((myModMask, xK_b), sendMessage ToggleStruts)
     , ((myModMask, xK_a), sendMessage MirrorShrink)
     , ((myModMask, xK_z), sendMessage MirrorExpand)
-    , ((myModMask, xK_p), spawn "synapse")
     , ((myModMask, xK_u), focusUrgent)
-    , ((0, 0x1008FF12), spawn "amixer -q set Master toggle")
-    , ((0, 0x1008FF11), spawn "amixer -q set Master 10%-")
-    , ((0, 0x1008FF13), spawn "amixer -q set Master 10%+")
+    , ((myModMask, xK_bracketleft), nextWS)
+    , ((myModMask, xK_bracketright), prevWS)
+    , ((myModMask, xK_Alt_L), toggleWS)
+    , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
+    , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
+    , ((0, 0x1008FF12), spawn "amixer -D pulse set Master 1+ toggle")
+    , ((0, 0x1008FF11), spawn "amixer -q set Master 5%-")
+    , ((0, 0x1008FF13), spawn "amixer -q set Master 5%+")
   ]
 
 
@@ -255,16 +259,17 @@ myKeyBindings =
 
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
-  resource =? "synapse" --> doIgnore
-  , resource =? "stalonetray" --> doIgnore
-  , className =? "rdesktop" --> doFloat
-  , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
-  , (className =? "Komodo IDE" <&&> resource =? "Komodo_find2") --> doFloat
-  , (className =? "Komodo IDE" <&&> resource =? "Komodo_gotofile") --> doFloat
-  , (className =? "Komodo IDE" <&&> resource =? "Toplevel") --> doFloat
-  , (className =? "Empathy") --> doF (W.shift "7:Chat")
-  , (className =? "Pidgin") --> doF (W.shift "7:Chat")
-  , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
+    resource =? "stalonetray" --> doIgnore
+  , className =? "Firefox" --> doF (W.shift "6:Web")
+  , (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat
+  , (className =? "Eclipse") --> doF (W.shift "5:Dev-J")
+  , (className =? "Evince") --> doF (W.shift "8:Doc")
+  , (className =? "Vlc") --> doF (W.shift "2:Vid")
+  , (className =? "Totem") --> doF (W.shift "2:Vid")
+  , (className =? "Vlc") --> doFloat
+  , (className =? "Thunar") --> doF (W.shift "0:File")
+  , (className =? "sun-awt-X11-XFramePeer" <&&> resource =? "IntelliJ IDEA 10.5") --> doF (W.shift "5:Dev-J")
+  , (className =? "Empathy") --> doF (W.shift "9:Chat")
   ]
 
 
