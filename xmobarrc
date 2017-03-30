@@ -22,7 +22,7 @@ Config {
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 91, 
+  position = TopW L 90, 
 
   -- list of commands which gather information about your system for
   -- presentation in the bar. 
@@ -31,8 +31,16 @@ Config {
     -- If it's above 50%, we consider it high usage and make it red.  
     Run MultiCpu [
       "-H","50",
-      "--high","red"
+      "--high","red",
+      "-t","CPU: <autototal>",
+      "-w","2"
     ] 10,
+
+    Run DynNetwork [
+      "-w","4",
+      "-t","<dev>:<rx>KB,<tx>KB"
+    ] 10,
+
 
     -- Gather and format memory usage information
     Run Memory [
@@ -45,23 +53,17 @@ Config {
     -- Battery information. This is likely to require some customization
     -- based upon your specific hardware. Or, for a desktop you may want
     -- to just remove this section entirely.
-    Run Battery [
-      "-t", "<acstatus>: <left>%", 
-      "--", 
-      "-c", "charge_full",
-      "-O", "AC",
-      "-o", "Bat",
-      "-h", "green",
-      "-l", "red"
+    Run BatteryP ["BAT0"]
+    [  "-t", "<acstatus>: <left>%" 
     ] 10,
     
     -- To get volume information, we run a custom bash script.
     -- This is because the built-in volume support in xmobar is disabled
     -- in Debian and derivatives like Ubuntu. 
-    Run Com "~/.xmonad/get-volume" [] "myvolume" 10,
+    -- Run Com "~/.xmonad/get-volume" [] "myvolume" 10,
     
     -- To get /home statistics we run a custom script
-    Run Com "~/.xmonad/get-size" [] "fs" 10,
+    -- Run Com "~/.xmonad/get-size" [] "fs" 10,
     
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
@@ -77,5 +79,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %fs% | %battery% | %multicpu% | %memory% | Vol: %myvolume% <fc=#e6744c>%date%</fc>"
+   template = "%StdinReader% }{ %multicpu% | %battery% | %memory% | %dynnetwork% | <fc=#e6744c>%date%</fc>"
 }

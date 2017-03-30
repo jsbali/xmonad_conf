@@ -205,7 +205,7 @@ myKeyBindings =
     , ((myModMask, xK_u), focusUrgent)
     , ((myModMask, xK_bracketleft), nextWS)
     , ((myModMask, xK_bracketright), prevWS)
-    , ((myModMask, xK_Alt_L), toggleWS)
+    , ((myModMask, xK_Alt_R), toggleWS)
     , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
     , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
     , ((0, 0x1008FF12), spawn "amixer -D pulse set Master 1+ toggle")
@@ -260,15 +260,12 @@ myKeyBindings =
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
     resource =? "stalonetray" --> doIgnore
-  , className =? "Firefox" --> doF (W.shift "6:Web")
-  , (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat
-  , (className =? "Eclipse") --> doF (W.shift "5:Dev-J")
+  , (className =? "Google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Evince") --> doF (W.shift "8:Doc")
   , (className =? "Vlc") --> doF (W.shift "2:Vid")
-  , (className =? "Totem") --> doF (W.shift "2:Vid")
   , (className =? "Vlc") --> doFloat
   , (className =? "Thunar") --> doF (W.shift "0:File")
-  , (className =? "sun-awt-X11-XFramePeer" <&&> resource =? "IntelliJ IDEA 10.5") --> doF (W.shift "5:Dev-J")
+  , (className =? "jetbrains-idea-ce") --> doF (W.shift "5:Dev-J")
   , (className =? "Empathy") --> doF (W.shift "9:Chat")
   ]
 
