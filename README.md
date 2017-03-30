@@ -1,1 +1,2 @@
-Forked from https://github.com/davidbrewer/xmonad-ubuntu-conf
+clone this in ~/.xmonad folder 
+run install-xmonad this installs everything
