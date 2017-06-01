@@ -21,7 +21,7 @@ xrdb -merge .Xresources
 # if you prefer not to use any transparency, but it is likely to cause
 # ugly black fringing with some programs such as synapse that expect
 # transparency support.
-xcompmgr -n &
+#xcompmgr -n &
 
 
 #
@@ -47,6 +47,9 @@ xrandr | grep 'VGA-1 connected' | ifne xrandr --output VGA-1 --auto --left-of LV
 # to the left of the primary screen.
 xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS-1
 
+# If we find that a screen is connected via DVI, activate it and position it
+# to the left of the primary screen.
+xrandr | grep 'HDMI1 connected' | ifne xrandr --output HDMI-1 --auto --left-of LVDS-1
 
 #
 # LOAD SCREEN BACKGROUNDS
@@ -81,6 +84,10 @@ gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 # Remap caps lock to left control. This is not strictly speaking
 # xmonad related, but it's handy if you're a vim user.
 setxkbmap -option 'ctrl:nocaps'
+
+
+#Runc wicd 
+wicd-client --tray &
 
 # Now, finally, start xmonad
 exec xmonad

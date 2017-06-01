@@ -207,7 +207,9 @@ myKeyBindings =
     , ((myModMask, xK_bracketright), prevWS)
     , ((myModMask, xK_Alt_R), toggleWS)
     , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
-    , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
+    , ((0, 0x1008ff02), spawn "/home/bali/opt/bin/brightness.sh inc")
+    , ((0, 0x1008ff03), spawn "/home/bali/opt/bin/brightness.sh dec")
+    , ((0, 0x1008ff4a), spawn "shutter -s")
     , ((0, 0x1008FF12), spawn "amixer -D pulse set Master 1+ toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 5%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 5%+")
@@ -262,8 +264,7 @@ myManagementHooks = [
     resource =? "stalonetray" --> doIgnore
   , (className =? "Google-chrome") --> doF (W.shift "6:Web")
   , (className =? "Evince") --> doF (W.shift "8:Doc")
-  , (className =? "Vlc") --> doF (W.shift "2:Vid")
-  , (className =? "Vlc") --> doFloat
+  , (className =? "vlc") --> doF (W.shift "2:Vid")
   , (className =? "Thunar") --> doF (W.shift "0:File")
   , (className =? "jetbrains-idea-ce") --> doF (W.shift "5:Dev-J")
   , (className =? "Empathy") --> doF (W.shift "9:Chat")
@@ -333,7 +334,7 @@ myKeys = myKeyBindings ++
 -}
 
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
+  xmproc <- spawnPipe "/home/bali/.cabal/bin/xmobar ~/.xmonad/xmobarrc"
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor

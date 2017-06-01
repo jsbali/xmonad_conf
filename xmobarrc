@@ -1,8 +1,7 @@
 -- xmobar configuration file 
 --
 -- Mess with this file to change the appearance of the contents of the
--- status bar which are not directly controlled by xmonad. You can see your
--- changes immediately by recompiling xmonad using "super-q".
+-- status bar which are not directly controlled by xmonad. You can see your -- changes immediately by recompiling xmonad using "super-q".
 -- 
 -- There's a lot you can do here. Refer to "man xmobar". 
 -- 
@@ -13,7 +12,7 @@
 Config { 
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
-  font = "xft:Ubuntu Mono-10",
+  font = "Monospace Regular-10",
   bgColor = "black",
   fgColor = "grey",
 
@@ -22,40 +21,45 @@ Config {
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 90, 
+  position = TopW L 93, 
 
   -- list of commands which gather information about your system for
   -- presentation in the bar. 
   commands = [ 
     -- Gather and format CPU usage information. 
     -- If it's above 50%, we consider it high usage and make it red.  
-    Run MultiCpu [
-      "-H","50",
-      "--high","red",
-      "-t","CPU: <autototal>",
-      "-w","2"
-    ] 10,
+    --Run MultiCpu [
+    --  "-H","50",
+    --  "--high","red",
+    --  "-t","CPU: <autototal>",
+    --  "-w","2"
+    --] 10,
 
-    Run DynNetwork [
-      "-w","4",
-      "-t","<dev>:<rx>KB,<tx>KB"
-    ] 10,
+    --Run DynNetwork [
+    --  "-w","4",
+    --  "-t","<dev>:<rx>KB,<tx>KB"
+    --] 10,
 
 
     -- Gather and format memory usage information
-    Run Memory [
-      "-t","Mem: <usedratio>%"
-    ] 10,
+    --Run Memory [
+    --  "-t","Mem: <usedratio>%"
+    --] 10,
 
     -- Date formatting
-    Run Date "%a %b %_d %l:%M" "date" 10,
+    Run Date "%a %b %_d %l:%M" "date" 100,
 
     -- Battery information. This is likely to require some customization
     -- based upon your specific hardware. Or, for a desktop you may want
     -- to just remove this section entirely.
     Run BatteryP ["BAT0"]
-    [  "-t", "<acstatus>: <left>%" 
-    ] 10,
+    [  "-t", "<acstatus>: <left>%",
+       "-H","60", "-h","green",
+       "-n","cyan",
+       "-L","15","-l","red",
+       "--","-O","<fc=green>ON</fc>",
+       "-o","OFF"
+    ] 100,
     
     -- To get volume information, we run a custom bash script.
     -- This is because the built-in volume support in xmobar is disabled
@@ -67,6 +71,8 @@ Config {
     
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
+
+    Run Com "/home/bali/opt/bin/vpn.sh" ["status"] "vpnstatus" 100,
     Run StdinReader
    ],
 
@@ -79,5 +85,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %multicpu% | %battery% | %memory% | %dynnetwork% | <fc=#e6744c>%date%</fc>"
+   template = "%StdinReader% }{ %vpnstatus% | %battery% | <fc=#e6744c>%date%</fc>"
 }
