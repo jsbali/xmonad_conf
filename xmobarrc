@@ -73,6 +73,8 @@ Config {
     -- get the information that xmonad is sending it for display.
 
     Run Com "/home/bali/opt/bin/vpn.sh" ["status"] "vpnstatus" 100,
+    Run Com "cat" ["/tmp/monitor_mode.dat"] "scr" 100,
+    Run Com "/home/bali/opt/bin/ping_check" ["yo"] "ping" 10,
     Run StdinReader
    ],
 
@@ -85,5 +87,5 @@ Config {
 
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
-   template = "%StdinReader% }{ %vpnstatus% | %battery% | <fc=#e6744c>%date%</fc>"
+   template = "%StdinReader% }{ %ping% | %scr% | %vpnstatus% | %battery% | <fc=#e6744c>%date%</fc>"
 }

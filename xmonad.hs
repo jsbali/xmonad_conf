@@ -44,7 +44,7 @@ myModMask            = mod4Mask       -- changes the mod key to "super"
 myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
-myTerminal           = "gnome-terminal"   -- which terminal software to use
+myTerminal           = "gnome-terminal --hide-menubar"   -- which terminal software to use
 myIMRosterTitle      = "Contact List" -- title of roster on IM workspace
 
 
@@ -209,7 +209,8 @@ myKeyBindings =
     , ((myModMask .|.controlMask, xK_l), spawn "gnome-screensaver-command --lock")
     , ((0, 0x1008ff02), spawn "/home/bali/opt/bin/brightness.sh inc")
     , ((0, 0x1008ff03), spawn "/home/bali/opt/bin/brightness.sh dec")
-    , ((0, 0x1008ff4a), spawn "shutter -s")
+    , ((0, 0x1008ff06), spawn "/home/bali/opt/bin/output_screen.sh")
+    , ((0, 0x1008ff05), spawn "gnome-screenshot -a")
     , ((0, 0x1008FF12), spawn "amixer -D pulse set Master 1+ toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 5%-")
     , ((0, 0x1008FF13), spawn "amixer -q set Master 5%+")
